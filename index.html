@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>segv — WE'LL BE LIVE SOON</title>
+  <meta name="description" content="segv is a developer team building Rust apps, web applications, developer tools, and CLI utilities for fun.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #050505;
+      --white: #ffffff;
+      --gray-900: #121212;
+      --gray-800: #1e1e1e;
+      --gray-700: #2d2d2d;
+      --gray-400: #a0a0a0;
+      --border: #262626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grid container header */
+    header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-cell {
+      padding: 1.5rem 2rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-img {
+      width: 28px;
+      height: 21px;
+    }
+
+    .brand-name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.04em;
+    }
+
+    .ticker-cell {
+      padding: 1.5rem 2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-cell {
+      padding: 1.5rem 2rem;
+      border-left: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    /* Main Grid Layout */
+    main {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      flex: 1;
+    }
+
+    @media (max-width: 860px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      header {
+        grid-template-columns: 1fr auto;
+      }
+      .ticker-cell {
+        display: none;
+      }
+    }
+
+    .main-hero-cell {
+      padding: 4rem 3rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-top {
+      margin-bottom: 4rem;
+    }
+
+    .giant-logo {
+      width: 140px;
+      height: auto;
+      margin-bottom: 3rem;
+      display: block;
+    }
+
+    h1.hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title span {
+      color: var(--gray-400);
+    }
+
+    .hero-bio {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: var(--gray-400);
+      max-width: 600px;
+    }
+
+    .hero-bottom-manifesto {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .manifesto-col h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .manifesto-col p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /* Sidebar Column */
+    .sidebar-cell {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-block {
+      padding: 2.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-block:last-child {
+      border-bottom: none;
+      flex: 1;
+    }
+
+    .block-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .block-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .list-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--gray-900);
+      color: var(--gray-400);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item span.tag {
+      color: var(--white);
+    }
+
+    /* Footer Strip */
+    footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-top: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gray-400);
+    }
+
+    .footer-cell {
+      padding: 1.25rem 2rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .footer-cell:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 600px) {
+      footer {
+        grid-template-columns: 1fr;
+      }
+      .footer-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-bottom-manifesto {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="brand-cell">
+      <img src="favicon.svg" alt="segv logo" class="logo-img">
+      <span class="brand-name">segv</span>
+    </a>
+    <div class="ticker-cell">
+      [0x00] NOT A COMPANY. NOT A STARTUP. JUST PEOPLE MAKING THINGS.
+    </div>
+    <div class="status-cell">
+      WE'LL BE LIVE SOON
+    </div>
+  </header>
+
+  <main>
+    <div class="main-hero-cell">
+      <div class="hero-top">
+        <img src="favicon.svg" alt="segv logo" class="giant-logo">
+        <h1 class="hero-title">
+          Finished more.<br>
+          <span>Planned less.</span>
+        </h1>
+        <p class="hero-bio">
+          `segv` is a developer team focused on learning, experimenting, and shipping projects we enjoy building.
+        </p>
+      </div>
+
+      <div class="hero-bottom-manifesto">
+        <div class="manifesto-col">
+          <h4>// Principles</h4>
+          <p>Learn in public. Keep things open source whenever possible. Prefer simple solutions.</p>
+        </div>
+        <div class="manifesto-col">
+          <h4>// Status</h4>
+          <p>Some projects will succeed. Some will fail spectacularly. Both are useful.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-cell">
+      <div class="sidebar-block">
+        <span class="block-num">01 / WHAT WE BUILD</span>
+        <h3 class="block-title">Stack & Projects</h3>
+        <div class="list-item">
+          <span>Rust Apps & Libs</span>
+          <span class="tag">[RUST]</span>
+        </div>
+        <div class="list-item">
+          <span>Web Applications</span>
+          <span class="tag">[WEB]</span>
+        </div>
+        <div class="list-item">
+          <span>Developer Tools</span>
+          <span class="tag">[DEV]</span>
+        </div>
+        <div class="list-item">
+          <span>CLI & TUI Utilities</span>
+          <span class="tag">[CLI]</span>
+        </div>
+        <div class="list-item">
+          <span>Desktop Customization</span>
+          <span class="tag">[OS]</span>
+        </div>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="block-num">02 / JOINING</span>
+        <h3 class="block-title">Cross Paths</h3>
+        <p style="font-size: 0.9rem; line-height: 1.5; color: var(--gray-400);">
+          We're not actively recruiting. If you enjoy building interesting software and happen to cross paths with us, that's usually how these things start.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-cell">"Works on my machine."</div>
+    <div class="footer-cell">&copy; SEGV DEVELOPER TEAM</div>
+    <div class="footer-cell">LATENCY: 0MS</div>
+  </footer>
+
+</body>
+</html>
